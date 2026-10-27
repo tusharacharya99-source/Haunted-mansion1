@@ -1,0 +1,369 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Haunted Mansion 1 | Enter If You Dare</title>
+<meta name="description" content="Enter the Haunted Mansion. Discover its secrets, survive the darkness, and escape if you can.">
+
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;background:#050607;color:#eee;
+  font-family:Georgia,"Times New Roman",serif;
+}
+a{color:inherit;text-decoration:none}
+button{font:inherit;cursor:pointer}
+:root{
+  --red:#a30d19;--bright:#f02a38;
+  --muted:#aaa4a4;--line:#382025;
+}
+header{
+  position:absolute;top:0;left:0;width:100%;z-index:5;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:24px 7%;border-bottom:1px solid #ffffff18;
+  background:linear-gradient(#0009,transparent);
+}
+.logo{font-size:23px;font-weight:bold;letter-spacing:3px}
+.logo span{color:#e31c2c}
+nav{display:flex;gap:28px;font-family:Arial,sans-serif;font-size:12px;
+  letter-spacing:2px;text-transform:uppercase}
+nav a{color:#c9c3c3;transition:.2s}
+nav a:hover{color:#ff3545}
+.hero{
+  min-height:100vh;position:relative;display:flex;align-items:center;
+  overflow:hidden;padding:150px 9% 90px;
+  background:
+    radial-gradient(ellipse at 50% 60%,#7e111d25,transparent 42%),
+    linear-gradient(90deg,#050607 0%,#080608e8 40%,#05060788 100%),
+    linear-gradient(#08070b,#171016 60%,#030405);
+}
+.hero:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(ellipse at 70% 25%,#a1a1a115,transparent 35%),
+    linear-gradient(0deg,#050607 0%,transparent 32%,#0006 100%);
+}
+.moon{
+  position:absolute;right:17%;top:15%;width:120px;height:120px;
+  border-radius:50%;background:#b5adb0;
+  box-shadow:0 0 50px #c1a7ac25;
+  opacity:.2;
+}
+.mansion{
+  position:absolute;right:3%;bottom:7%;width:min(55%,700px);
+  height:72%;opacity:.62;filter:drop-shadow(0 0 30px #7d101d30);
+}
+.mansion svg{width:100%;height:100%}
+.hero-content{position:relative;z-index:2;max-width:680px}
+.kicker{
+  color:#e23b46;font: bold 12px Arial,sans-serif;
+  letter-spacing:5px;text-transform:uppercase;
+}
+h1{
+  font-size:clamp(48px,8vw,100px);line-height:.95;
+  margin:24px 0;letter-spacing:-2px;font-weight:normal;
+  text-shadow:0 0 35px #8d10152b;
+}
+h1 span{display:block;color:#c91d2b;font-style:italic}
+.intro{
+  color:#b5adae;font:15px/1.9 Arial,sans-serif;
+  max-width:480px;
+}
+.buttons{display:flex;gap:15px;flex-wrap:wrap;margin-top:32px}
+.btn{
+  display:inline-flex;justify-content:center;align-items:center;
+  padding:16px 25px;min-height:52px;
+  font:bold 12px Arial,sans-serif;letter-spacing:2px;
+  text-transform:uppercase;border:1px solid #8e1722;
+  transition:.2s;
+}
+.btn-play{
+  background:#a10f1c;color:#fff;
+  box-shadow:0 0 30px #a10f1c32;
+}
+.btn-play:hover{background:#d51a2b;transform:translateY(-3px)}
+.btn-more{background:#09080999;color:#d7cfd0;border-color:#554247}
+.btn-more:hover{border-color:#d52a39;color:white}
+.warning{
+  margin-top:24px;color:#777;font:10px Arial,sans-serif;
+  letter-spacing:2px;text-transform:uppercase;
+}
+.scroll{
+  position:absolute;bottom:25px;left:9%;color:#777;
+  font:10px Arial,sans-serif;letter-spacing:3px;
+}
+.scroll:after{content:"";display:inline-block;width:45px;height:1px;
+  background:#86202a;margin:0 0 3px 12px}
+.section{
+  padding:100px 9%;border-top:1px solid #24171b;
+  background:linear-gradient(180deg,#090709,#0d090b);
+}
+.label{
+  color:#cf2735;font:bold 11px Arial,sans-serif;
+  letter-spacing:4px;text-transform:uppercase;
+}
+h2{font-size:clamp(32px,5vw,52px);font-weight:normal;margin:16px 0}
+.section-intro{
+  max-width:650px;color:#aaa;font:15px/1.9 Arial,sans-serif;
+}
+.cards{
+  display:grid;grid-template-columns:repeat(3,minmax(0,1fr));
+  gap:18px;margin-top:40px;
+}
+.card{
+  min-height:235px;padding:28px;border:1px solid #332127;
+  background:linear-gradient(145deg,#181014,#0b090b);
+  transition:.25s;position:relative;overflow:hidden;
+}
+.card:hover{transform:translateY(-5px);border-color:#8b1a27}
+.card-number{font:12px Arial,sans-serif;color:#b51e2c;letter-spacing:3px}
+.card h3{font-size:25px;font-weight:normal;margin:25px 0 12px}
+.card p{font:13px/1.8 Arial,sans-serif;color:#999}
+.card .symbol{position:absolute;right:20px;top:18px;
+  font-size:28px;color:#7d1b28;opacity:.65}
+.controls{
+  display:grid;grid-template-columns:1fr 1fr;gap:12px;
+  margin-top:30px;max-width:700px;
+}
+.control{
+  display:flex;justify-content:space-between;gap:12px;
+  border-bottom:1px solid #352127;padding:16px 0;
+  font:13px Arial,sans-serif;color:#bbb;
+}
+kbd{
+  background:#21171b;border:1px solid #503039;
+  padding:5px 9px;color:#eee;border-radius:3px;
+}
+.final{
+  text-align:center;padding:100px 20px;
+  background:radial-gradient(ellipse at center,#5b101a30,transparent 60%),#070607;
+}
+.final h2{font-size:clamp(35px,6vw,65px)}
+.final p{font:14px/1.8 Arial,sans-serif;color:#999;margin:20px auto 30px}
+footer{
+  padding:25px 7%;border-top:1px solid #2a1a1e;
+  display:flex;justify-content:space-between;gap:15px;flex-wrap:wrap;
+  color:#71686a;font:11px Arial,sans-serif;letter-spacing:1px;
+}
+#message{
+  display:none;position:fixed;z-index:20;inset:0;
+  background:#000d;align-items:center;justify-content:center;padding:20px;
+}
+.message-box{
+  max-width:440px;width:100%;padding:30px;background:#120b0e;
+  border:1px solid #82202b;text-align:center;
+}
+.message-box p{color:#aaa;font:14px/1.8 Arial,sans-serif}
+@media(max-width:760px){
+  header{padding:20px 5%}
+  .logo{font-size:17px;letter-spacing:2px}
+  nav{gap:12px;font-size:9px;letter-spacing:1px}
+  .hero{padding:140px 7% 100px;min-height:100svh}
+  .mansion{width:85%;height:53%;right:-15%;bottom:8%;opacity:.25}
+  .moon{right:12%;top:20%;width:80px;height:80px}
+  .hero-content{max-width:100%}
+  .intro{font-size:13px}
+  .section{padding:70px 7%}
+  .cards{grid-template-columns:1fr}
+  .card{min-height:190px}
+  .controls{grid-template-columns:1fr}
+  .scroll{left:7%}
+}
+@media(max-width:400px){
+  nav{gap:8px;font-size:8px}
+  .logo{font-size:15px}
+  .btn{width:100%}
+}
+</style>
+</head>
+
+<body>
+<header>
+  <a class="logo" href="#top">HAUNTED <span>MANSION 1</span></a>
+  <nav>
+    <a href="#top">Home</a>
+    <a href="#story">Story</a>
+    <a href="#chapters">Chapters</a>
+    <a href="#controls">Controls</a>
+  </nav>
+</header>
+
+<section class="hero" id="top">
+  <div class="moon"></div>
+
+  <!-- Original mansion illustration made with SVG -->
+  <div class="mansion" aria-hidden="true">
+    <svg viewBox="0 0 600 600" preserveAspectRatio="xMidYMax meet"
+      xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <linearGradient id="wall" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0" stop-color="#40343b"/>
+          <stop offset="1" stop-color="#09070a"/>
+        </linearGradient>
+        <linearGradient id="window" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0" stop-color="#a32b36"/>
+          <stop offset="1" stop-color="#17080c"/>
+        </linearGradient>
+      </defs>
+      <path d="M40 570V270L120 210V120L190 170V260L260 200V75L330 25L400 75V220L475 170L555 240V570Z"
+        fill="#050507" stroke="#473039" stroke-width="3"/>
+      <path d="M60 570V290L145 225L230 290V570Z"
+        fill="url(#wall)" stroke="#514047" stroke-width="3"/>
+      <path d="M220 570V225L330 100L440 225V570Z"
+        fill="url(#wall)" stroke="#514047" stroke-width="3"/>
+      <path d="M390 570V290L485 210L545 270V570Z"
+        fill="#100b10" stroke="#514047" stroke-width="3"/>
+      <path d="M100 290V225L145 190L190 225V290Z" fill="#0a070a"/>
+      <path d="M235 225L330 90L425 225Z" fill="#080609" stroke="#473039" stroke-width="3"/>
+      <path d="M405 290L485 190L545 250V290Z" fill="#080609"/>
+      <g fill="url(#window)" stroke="#5e2830" stroke-width="4">
+        <path d="M95 335V300Q120 270 145 300V335Z"/>
+        <path d="M155 335V300Q180 270 205 300V335Z"/>
+        <path d="M260 265V210Q280 180 300 210V265Z"/>
+        <path d="M335 265V210Q355 180 375 210V265Z"/>
+        <path d="M435 335V300Q460 270 485 300V335Z"/>
+        <path d="M495 335V300Q515 275 535 300V335Z"/>
+      </g>
+      <g stroke="#29161c" stroke-width="4">
+        <path d="M120 300V335M95 318H145M180 300V335M155 318H205"/>
+        <path d="M280 210V265M260 238H300M355 210V265M335 238H375"/>
+        <path d="M460 300V335M435 318H485M515 300V335M495 318H535"/>
+      </g>
+      <path d="M270 570V420Q330 335 390 420V570Z"
+        fill="#040406" stroke="#4a2930" stroke-width="4"/>
+      <path d="M295 570V435Q330 385 365 435V570Z" fill="#10070b"/>
+      <circle cx="350" cy="495" r="4" fill="#c51b2c"/>
+      <path d="M20 570H580" stroke="#45323a" stroke-width="5"/>
+      <g fill="#09070a">
+        <path d="M0 570L30 500L65 570ZM540 570L575 480L610 570Z"/>
+        <path d="M35 570L55 520L75 570ZM520 570L540 520L560 570Z"/>
+      </g>
+    </svg>
+  </div>
+
+  <div class="hero-content">
+    <div class="kicker">Some doors should stay closed</div>
+    <h1>THE NIGHTMARE<br><span>BEGINS HERE.</span></h1>
+    <p class="intro">
+      At the edge of a forgotten forest stands a mansion with a terrible
+      secret. The doors are open. The halls are silent. Something is waiting
+      for you inside.
+    </p>
+    <div class="buttons">
+      <button class="btn btn-play" id="playNow">▶ &nbsp; PLAY NOW</button>
+      <a class="btn btn-more" href="#story">DISCOVER THE STORY</a>
+    </div>
+    <div class="warning">Headphones recommended · Enter at your own risk</div>
+  </div>
+  <a class="scroll" href="#story">SCROLL TO DESCEND</a>
+</section>
+
+<section class="section" id="story">
+  <div class="label">The story</div>
+  <h2>THE HOUSE REMEMBERS.</h2>
+  <p class="section-intro">
+    You have entered a place abandoned by the living but not by the dead.
+    Every locked room hides a piece of the past. Every corridor may lead
+    you closer to the truth—or to something far worse. Find what the
+    mansion has hidden. Survive what it has become.
+  </p>
+</section>
+
+<section class="section" id="chapters">
+  <div class="label">Your nightmare awaits</div>
+  <h2>THREE CHAPTERS. ONE ESCAPE.</h2>
+  <p class="section-intro">
+    Explore the mansion's dark history as the nightmare grows deeper.
+  </p>
+  <div class="cards">
+    <article class="card">
+      <span class="symbol">I</span>
+      <div class="card-number">CHAPTER 01</div>
+      <h3>The Forgotten Wing</h3>
+      <p>Enter the abandoned halls. Search for clues. Do not trust the silence.</p>
+    </article>
+    <article class="card">
+      <span class="symbol">II</span>
+      <div class="card-number">CHAPTER 02</div>
+      <h3>The Powerless Basement</h3>
+      <p>The lights are gone. Something moves in the darkness beneath the house.</p>
+    </article>
+    <article class="card">
+      <span class="symbol">III</span>
+      <div class="card-number">CHAPTER 03</div>
+      <h3>The Ritual Chambers</h3>
+      <p>The truth is waiting below. Discover what happened—and face the end.</p>
+    </article>
+  </div>
+</section>
+
+<section class="section" id="controls">
+  <div class="label">Know how to survive</div>
+  <h2>CONTROLS</h2>
+  <p class="section-intro">Remember the controls. You may not get a second chance.</p>
+  <div class="controls">
+    <div class="control"><span>Move</span><span><kbd>W</kbd> <kbd>A</kbd> <kbd>S</kbd> <kbd>D</kbd></span></div>
+    <div class="control"><span>Run</span><kbd>SHIFT</kbd></div>
+    <div class="control"><span>Flashlight</span><kbd>F</kbd></div>
+    <div class="control"><span>Interact / Exit</span><kbd>E</kbd></div>
+    <div class="control"><span>Look around</span><span>Mouse / Touch</span></div>
+    <div class="control"><span>Stay alive</span><span>Never stop moving</span></div>
+  </div>
+</section>
+
+<section class="final">
+  <div class="label">It has been waiting for you</div>
+  <h2>WILL YOU ENTER?</h2>
+  <p>The mansion has opened its doors. Your story starts now.</p>
+  <button class="btn btn-play" id="playBottom">▶ &nbsp; ENTER THE MANSION</button>
+</section>
+
+<footer>
+  <span>© <span id="year"></span> HAUNTED MANSION 1</span>
+  <span>THE NIGHT IS NOT OVER.</span>
+</footer>
+
+<div id="message" role="dialog" aria-modal="true" aria-labelledby="messageTitle">
+  <div class="message-box">
+    <div class="label">The entrance is locked</div>
+    <h2 id="messageTitle">Connect your game</h2>
+    <p id="messageText">Add your published Haunted Mansion game URL in the code to make the Play Now button launch the game.</p>
+    <button class="btn btn-play" id="closeMessage">UNDERSTOOD</button>
+  </div>
+</div>
+
+<script>
+/*
+  IMPORTANT:
+  Replace the URL below with your deployed Haunted Mansion game URL.
+  It may be your Google Apps Script web app URL, or a relative path
+  such as "game/index.html" if the game is hosted with this website.
+*/
+const GAME_URL = "PASTE_YOUR_HAUNTED_MANSION_GAME_URL_HERE";
+
+function startGame(){
+  if(!GAME_URL ||
+     GAME_URL === "PASTE_YOUR_HAUNTED_MANSION_GAME_URL_HERE"){
+    document.getElementById("message").style.display="flex";
+    return;
+  }
+  window.location.href = GAME_URL;
+}
+document.getElementById("playNow").addEventListener("click",startGame);
+document.getElementById("playBottom").addEventListener("click",startGame);
+document.getElementById("closeMessage").addEventListener("click",()=>{
+  document.getElementById("message").style.display="none";
+});
+document.getElementById("message").addEventListener("click",e=>{
+  if(e.target.id==="message")e.currentTarget.style.display="none";
+});
+document.addEventListener("keydown",e=>{
+  if(e.key==="Escape")document.getElementById("message").style.display="none";
+});
+document.getElementById("year").textContent=new Date().getFullYear();
+</script>
+</body>
+</html>
